@@ -170,10 +170,20 @@ export default function DashboardPage() {
                   </div>
                 </div>
               ))}
-              {summary.upcoming_billing_total > 0 && (
-                <div className="flex items-center justify-between pt-2 mt-2 text-xs" style={{ borderTop: '1px solid var(--color-border)' }}>
-                  <span style={{ color: 'var(--color-text-muted)' }}>30-day total</span>
-                  <CostBadge amount={summary.upcoming_billing_total} />
+              {(summary.upcoming_billing_total > 0 || costs?.total_yearly > 0) && (
+                <div className="pt-2 mt-2 space-y-1 text-xs" style={{ borderTop: '1px solid var(--color-border)' }}>
+                  {summary.upcoming_billing_total > 0 && (
+                    <div className="flex items-center justify-between">
+                      <span style={{ color: 'var(--color-text-muted)' }}>{t('total_monthly')}</span>
+                      <CostBadge amount={costs?.total_monthly} />
+                    </div>
+                  )}
+                  {costs?.total_yearly > 0 && (
+                    <div className="flex items-center justify-between">
+                      <span style={{ color: 'var(--color-text-muted)' }}>{t('total_yearly')}</span>
+                      <CostBadge amount={costs.total_yearly} />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
