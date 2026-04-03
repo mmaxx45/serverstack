@@ -80,7 +80,7 @@ export default function serverRoutes(db) {
   // --- Cost history routes ---
 
   router.get('/:id/cost-history', (req, res) => {
-    const history = db.prepare('SELECT * FROM cost_history WHERE server_id = ? ORDER BY changed_at DESC').all(req.params.id);
+    const history = db.prepare('SELECT * FROM cost_history WHERE server_id = ? ORDER BY id DESC').all(req.params.id);
     res.json(history);
   });
 
@@ -102,7 +102,7 @@ export default function serverRoutes(db) {
     db.prepare("UPDATE servers SET monthly_cost = ?, updated_at = datetime('now') WHERE id = ?")
       .run(parsedCost, req.params.id);
 
-    const updated = db.prepare('SELECT * FROM cost_history WHERE server_id = ? ORDER BY changed_at DESC').all(req.params.id);
+    const updated = db.prepare('SELECT * FROM cost_history WHERE server_id = ? ORDER BY id DESC').all(req.params.id);
     res.status(201).json(updated);
   });
 
