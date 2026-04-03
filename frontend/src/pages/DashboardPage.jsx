@@ -51,8 +51,8 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard icon={Server} label={t('total_servers')} value={summary.servers.total} sub={`${summary.servers.active} ${t('active_servers').toLowerCase()}`} />
         <StatCard icon={Building2} label={t('providers')} value={summary.providers} color="#06b6d4" />
-        <StatCard icon={DollarSign} label={t('total_monthly')} value={<CostBadge amount={costs?.total_monthly} />}
-          sub={summary.next_billing ? `${t('next_charge')}: ${summary.next_billing.billing_date}` : null} color="#f59e0b" />
+        <StatCard icon={DollarSign} label={t('cost_breakdown')} value={<CostBadge amount={costs?.total_monthly} />}
+          sub={<><span style={{ color: 'var(--color-text-muted)' }}>{t('total_yearly')}: </span><CostBadge amount={costs?.total_yearly} /></>} color="#f59e0b" />
         <StatCard icon={TrendingUp} label={t('promo_savings')} value={<CostBadge amount={costs?.promo_savings} />} color="#8b5cf6" />
       </div>
 
@@ -170,20 +170,10 @@ export default function DashboardPage() {
                   </div>
                 </div>
               ))}
-              {(summary.upcoming_billing_total > 0 || costs?.total_yearly > 0) && (
-                <div className="pt-2 mt-2 space-y-1 text-xs" style={{ borderTop: '1px solid var(--color-border)' }}>
-                  {summary.upcoming_billing_total > 0 && (
-                    <div className="flex items-center justify-between">
-                      <span style={{ color: 'var(--color-text-muted)' }}>{t('total_monthly')}</span>
-                      <CostBadge amount={costs?.total_monthly} />
-                    </div>
-                  )}
-                  {costs?.total_yearly > 0 && (
-                    <div className="flex items-center justify-between">
-                      <span style={{ color: 'var(--color-text-muted)' }}>{t('total_yearly')}</span>
-                      <CostBadge amount={costs.total_yearly} />
-                    </div>
-                  )}
+              {summary.upcoming_billing_total > 0 && (
+                <div className="flex items-center justify-between pt-2 mt-2 text-xs" style={{ borderTop: '1px solid var(--color-border)' }}>
+                  <span style={{ color: 'var(--color-text-muted)' }}>30d</span>
+                  <CostBadge amount={summary.upcoming_billing_total} />
                 </div>
               )}
             </div>
