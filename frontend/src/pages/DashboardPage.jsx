@@ -48,11 +48,12 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>{t('title')}</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         <StatCard icon={Server} label={t('total_servers')} value={summary.servers.total} sub={`${summary.servers.active} ${t('active_servers').toLowerCase()}`} />
         <StatCard icon={Building2} label={t('providers')} value={summary.providers} color="#06b6d4" />
-        <StatCard icon={DollarSign} label={t('cost_breakdown')} value={<CostBadge amount={costs?.total_monthly} />}
-          sub={<><span style={{ color: 'var(--color-text-muted)' }}>{t('total_yearly')}: </span><CostBadge amount={costs?.total_yearly} /></>} color="#f59e0b" />
+        <StatCard icon={DollarSign} label={t('total_monthly')} value={<CostBadge amount={costs?.total_monthly} />}
+          sub={summary.next_billing ? `${t('next_charge')}: ${summary.next_billing.billing_date}` : null} color="#f59e0b" />
+        <StatCard icon={DollarSign} label={t('total_yearly')} value={<CostBadge amount={costs?.total_yearly} />} color="#f59e0b" />
         <StatCard icon={TrendingUp} label={t('promo_savings')} value={<CostBadge amount={costs?.promo_savings} />} color="#8b5cf6" />
       </div>
 
