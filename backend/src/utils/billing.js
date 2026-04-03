@@ -124,8 +124,22 @@ export function getNextBillingDate(server) {
   }
 
   // Priority 2: No start_date but end_date exists → derive billing day from end_date
+  // Extract day-of-month from end_date, find next occurrence of that day in the cycle
   if (server.contract_end_date && cycleMonths) {
-    const next = nextRecurringDate(server.contract_end_date, cycleMonths);
+    const endParsed = parseDate(server.contract_end_date);
+    const billingDay = endParsed.getDate();
+
+    // Start from a reference point far enough in the past, then advance
+    // Use end_date minus a large multiple of cycles to establish a base
+    let ref = new Date(endParsed);
+    while (ref > now) {
+      ref = addMonths(ref, -cycleMonths);
+    }
+    // Now advance forward from this past reference
+    let next = new Date(ref);
+    while (next <= now) {
+      next = addMonths(next, cycleMonths);
+    }
     const nextStr = formatDate(next);
     const days = daysBetween(now, next);
     return { date: nextStr, days_until: days, status: days <= 7 ? 'due_soon' : 'upcoming', label: `Due on ${nextStr}`, amount };
