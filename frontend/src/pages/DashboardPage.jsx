@@ -48,27 +48,12 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>{t('title')}</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         <StatCard icon={Server} label={t('total_servers')} value={summary.servers.total} sub={`${summary.servers.active} ${t('active_servers').toLowerCase()}`} />
         <StatCard icon={Building2} label={t('providers')} value={summary.providers} color="#06b6d4" />
-        <div className="rounded-xl p-5 hover-lift" style={{ background: 'var(--color-surface-raised)', border: '1px solid var(--color-border)' }}>
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-baseline gap-3">
-                <div>
-                  <p className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>{t('total_monthly')}</p>
-                  <p className="text-xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}><CostBadge amount={costs?.total_monthly} /></p>
-                </div>
-                <div style={{ borderLeft: '1px solid var(--color-border)', paddingLeft: '12px' }}>
-                  <p className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>{t('total_yearly')}</p>
-                  <p className="text-xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}><CostBadge amount={costs?.total_yearly} /></p>
-                </div>
-              </div>
-              {summary.next_billing && <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{t('next_charge')}: {summary.next_billing.billing_date}</p>}
-            </div>
-            <div className="p-2.5 rounded-lg" style={{ background: '#f59e0b15', color: '#f59e0b' }}><DollarSign size={20} /></div>
-          </div>
-        </div>
+        <StatCard icon={DollarSign} label={t('total_monthly')} value={<CostBadge amount={costs?.total_monthly} />}
+          sub={summary.next_billing ? `${t('next_charge')}: ${summary.next_billing.billing_date}` : null} color="#f59e0b" />
+        <StatCard icon={DollarSign} label={t('total_yearly')} value={<CostBadge amount={costs?.total_yearly} />} color="#f59e0b" />
         <StatCard icon={TrendingUp} label={t('promo_savings')} value={<CostBadge amount={costs?.promo_savings} />} color="#8b5cf6" />
       </div>
 
