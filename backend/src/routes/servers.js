@@ -25,7 +25,7 @@ export default function serverRoutes(db) {
       servers = db.prepare(`
         SELECT DISTINCT s.*, p.name as provider_name,
           (SELECT ip.address FROM ip_addresses ip WHERE ip.server_id = s.id AND ip.version = 'ipv4' AND ip.type = 'primary' LIMIT 1) as primary_ipv4,
-          (SELECT COALESCE(SUM(sd.size_gb), 0) FROM server_disks sd WHERE sd.server_id = s.id) as total_disk_gb
+          COALESCE((SELECT SUM(sd.size_gb) FROM server_disks sd WHERE sd.server_id = s.id), s.storage_gb, 0) as total_disk_gb
         FROM servers s
         LEFT JOIN providers p ON s.provider_id = p.id
         JOIN server_tags st ON st.server_id = s.id
@@ -37,7 +37,7 @@ export default function serverRoutes(db) {
       servers = db.prepare(`
         SELECT s.*, p.name as provider_name,
           (SELECT ip.address FROM ip_addresses ip WHERE ip.server_id = s.id AND ip.version = 'ipv4' AND ip.type = 'primary' LIMIT 1) as primary_ipv4,
-          (SELECT COALESCE(SUM(sd.size_gb), 0) FROM server_disks sd WHERE sd.server_id = s.id) as total_disk_gb
+          COALESCE((SELECT SUM(sd.size_gb) FROM server_disks sd WHERE sd.server_id = s.id), s.storage_gb, 0) as total_disk_gb
         FROM servers s
         LEFT JOIN providers p ON s.provider_id = p.id
         ORDER BY s.name

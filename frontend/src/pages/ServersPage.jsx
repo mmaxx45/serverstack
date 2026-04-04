@@ -133,7 +133,7 @@ export default function ServersPage() {
                   {server.total_disk_gb > 0 && (
                     <span className="flex items-center gap-1 font-mono">
                       <HardDrive size={12} style={{ color: '#f59e0b' }} />
-                      {server.total_disk_gb >= 1024 ? `${(server.total_disk_gb / 1024).toFixed(1)} TB` : `${server.total_disk_gb} GB`}
+                      {server.total_disk_gb} GB
                     </span>
                   )}
                 </div>
