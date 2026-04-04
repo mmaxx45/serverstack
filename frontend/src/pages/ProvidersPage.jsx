@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Building2, Pencil, Trash2, X, ExternalLink, TrendingUp } from 'lucide-react';
+import ConfirmModal from '../components/ConfirmModal.jsx';
 import { api } from '../api/client.js';
 
 export default function ProvidersPage() {
@@ -37,8 +38,9 @@ export default function ProvidersPage() {
     setShowForm(true);
   };
 
+  const [deleteTarget, setDeleteTarget] = useState(null);
+
   const handleDelete = async (p) => {
-    if (!confirm(`${t('actions.delete')} "${p.name}"?`)) return;
     try { await api.deleteProvider(p.id); load(); }
     catch (err) { alert(err.response?.data?.error || err.message); }
   };
@@ -119,7 +121,7 @@ export default function ProvidersPage() {
                   <TrendingUp size={14} />
                 </button>
                 <button onClick={() => handleEdit(p)} className="p-2 rounded-lg hover:bg-white/5" style={{ color: 'var(--color-text-muted)' }}><Pencil size={14} /></button>
-                <button onClick={() => handleDelete(p)} className="p-2 rounded-lg hover:bg-white/5" style={{ color: 'var(--color-danger)' }}><Trash2 size={14} /></button>
+                <button onClick={() => setDeleteTarget(p)} className="p-2 rounded-lg hover:bg-white/5" style={{ color: 'var(--color-danger)' }}><Trash2 size={14} /></button>
               </div>
 
               {surgeProvider === p.id && (
@@ -198,6 +200,15 @@ export default function ProvidersPage() {
             </div>
           ))}
         </div>
+      )}
+      {deleteTarget && (
+        <ConfirmModal
+          title={t('actions.delete')}
+          message={deleteTarget.name}
+          danger
+          onConfirm={() => { handleDelete(deleteTarget); setDeleteTarget(null); }}
+          onCancel={() => setDeleteTarget(null)}
+        />
       )}
     </div>
   );
