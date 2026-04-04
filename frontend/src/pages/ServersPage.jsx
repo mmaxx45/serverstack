@@ -123,20 +123,24 @@ export default function ServersPage() {
                 </div>
               </div>
               {server.tags?.length > 0 && (
-                <div className="flex flex-wrap gap-1 pt-2">
+                <div className="flex flex-wrap gap-1 pt-2 pb-1">
                   {server.tags.map(tag => <TagPill key={tag.id} tag={tag} />)}
                 </div>
               )}
-              <div className="mt-auto pt-3 flex items-center justify-between text-xs"
-                style={{ borderTop: '1px solid var(--color-border)' }}>
-                <span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--color-primary)' }}>
-                  <ExternalLink size={12} /> {t('server_detail')}
-                </span>
-                {server.billing_cycle && server.monthly_cost > 0 && (
-                  <span className="group-hover:opacity-0 transition-opacity" style={{ color: 'var(--color-text-muted)' }}>
-                    {t(`contracts:cycle_${server.billing_cycle}`, server.billing_cycle)}
+              <div className="mt-auto pt-3 text-xs" style={{ borderTop: '1px solid var(--color-border)' }}>
+                <div className="flex items-center justify-between" style={{ color: 'var(--color-text-muted)' }}>
+                  <span className="flex items-center gap-2">
+                    {server.location && <span>{server.location}</span>}
+                    {server.billing_cycle && server.monthly_cost > 0 && (
+                      <span className="px-1.5 py-0.5 rounded" style={{ background: 'var(--color-surface)' }}>
+                        {t(`contracts:cycle_${server.billing_cycle}`, server.billing_cycle)}
+                      </span>
+                    )}
                   </span>
-                )}
+                  <span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--color-primary)' }}>
+                    <ExternalLink size={12} /> {t('server_detail')}
+                  </span>
+                </div>
               </div>
             </Link>
           ))}
