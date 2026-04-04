@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Plus, Search, Server, ExternalLink } from 'lucide-react';
+import { Plus, Search, Server, ExternalLink, Copy, Check } from 'lucide-react';
 import { api } from '../api/client.js';
 import StatusBadge from '../components/StatusBadge.jsx';
+import CostBadge from '../components/CostBadge.jsx';
 import TagPill from '../components/TagPill.jsx';
 
 export default function ServersPage() {
@@ -11,6 +12,7 @@ export default function ServersPage() {
   const [servers, setServers] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [activeTag, setActiveTag] = useState('');
+  const [copiedId, setCopiedId] = useState(null);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -85,17 +87,37 @@ export default function ServersPage() {
               className="rounded-xl p-5 group hover-lift block"
               style={{ background: 'var(--color-surface-raised)', border: '1px solid var(--color-border)' }}>
               <div className="flex items-start justify-between mb-3">
-                <div>
-                  <h3 className="font-semibold text-sm group-hover:text-emerald-400 transition-colors">{server.name}</h3>
-                  {server.hostname && <p className="font-mono text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{server.hostname}</p>}
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-semibold text-sm group-hover:text-emerald-400 transition-colors truncate">{server.name}</h3>
+                  {server.hostname && <p className="font-mono text-xs mt-0.5 truncate" style={{ color: 'var(--color-text-muted)' }}>{server.hostname}</p>}
                 </div>
-                <StatusBadge status={server.status} />
+                <div className="flex items-center gap-2 shrink-0 ml-2">
+                  {server.monthly_cost > 0 && <CostBadge amount={server.monthly_cost} />}
+                  <StatusBadge status={server.status} />
+                </div>
               </div>
-              <div className="space-y-1.5 text-xs" style={{ color: 'var(--color-text-muted)' }}>
+
+              {/* Primary IPv4 with copy */}
+              {server.primary_ipv4 && (
+                <div className="flex items-center gap-2 mb-2 px-2 py-1.5 rounded-lg" style={{ background: 'var(--color-surface)' }}>
+                  <span className="font-mono text-xs flex-1 truncate" style={{ color: 'var(--color-text)' }}>{server.primary_ipv4}</span>
+                  <button onClick={(e) => {
+                    e.preventDefault(); e.stopPropagation();
+                    navigator.clipboard.writeText(server.primary_ipv4);
+                    setCopiedId(server.id);
+                    setTimeout(() => setCopiedId(null), 1500);
+                  }} className="p-1 rounded hover:bg-white/10 transition-colors shrink-0"
+                    style={{ color: copiedId === server.id ? 'var(--color-primary)' : 'var(--color-text-muted)' }}>
+                    {copiedId === server.id ? <Check size={12} /> : <Copy size={12} />}
+                  </button>
+                </div>
+              )}
+
+              <div className="space-y-1 text-xs" style={{ color: 'var(--color-text-muted)' }}>
                 {server.provider_name && <p>{t('provider')}: {server.provider_name}</p>}
                 {server.type && <p className="capitalize">{t(`type_${server.type}`, server.type)}</p>}
                 {server.os && <p>{server.os}</p>}
-                <div className="flex gap-4 pt-2">
+                <div className="flex gap-4 pt-1">
                   {server.cpu_cores && <span className="font-mono">{server.cpu_cores} {t('cpu_cores')}</span>}
                   {server.ram_mb && <span className="font-mono">{server.ram_mb} MB</span>}
                 </div>
@@ -105,9 +127,11 @@ export default function ServersPage() {
                   {server.tags.map(tag => <TagPill key={tag.id} tag={tag} />)}
                 </div>
               )}
-              <div className="mt-3 pt-3 flex items-center gap-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ borderTop: '1px solid var(--color-border)', color: 'var(--color-primary)' }}>
-                <ExternalLink size={12} /> {t('server_detail')}
+              <div className="mt-3 pt-3 flex items-center justify-between text-xs"
+                style={{ borderTop: '1px solid var(--color-border)' }}>
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1" style={{ color: 'var(--color-primary)' }}>
+                  <ExternalLink size={12} /> {t('server_detail')}
+                </span>
               </div>
             </Link>
           ))}
