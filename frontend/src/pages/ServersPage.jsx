@@ -84,7 +84,7 @@ export default function ServersPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           {filtered.map(server => (
             <Link key={server.id} to={`/servers/${server.id}`}
-              className="rounded-xl p-5 group hover-lift block"
+              className="rounded-xl p-5 group hover-lift flex flex-col"
               style={{ background: 'var(--color-surface-raised)', border: '1px solid var(--color-border)' }}>
               <div className="flex items-start justify-between mb-3">
                 <div className="min-w-0 flex-1">
@@ -106,9 +106,9 @@ export default function ServersPage() {
                     navigator.clipboard.writeText(server.primary_ipv4);
                     setCopiedId(server.id);
                     setTimeout(() => setCopiedId(null), 1500);
-                  }} className="p-1 rounded hover:bg-white/10 transition-colors shrink-0"
+                  }} className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-white/10 transition-all shrink-0"
                     style={{ color: copiedId === server.id ? 'var(--color-primary)' : 'var(--color-text-muted)' }}>
-                    {copiedId === server.id ? <Check size={12} /> : <Copy size={12} />}
+                    {copiedId === server.id ? <><Check size={12} /><span className="text-[10px] font-medium">{t('common:actions.copied', 'Copied')}</span></> : <Copy size={12} />}
                   </button>
                 </div>
               )}
@@ -119,7 +119,7 @@ export default function ServersPage() {
                 {server.os && <p>{server.os}</p>}
                 <div className="flex gap-4 pt-1">
                   {server.cpu_cores && <span className="font-mono">{server.cpu_cores} {t('cpu_cores')}</span>}
-                  {server.ram_mb && <span className="font-mono">{server.ram_mb} MB</span>}
+                  {server.ram_mb && <span className="font-mono">{server.ram_mb >= 1024 && server.ram_mb % 1024 === 0 ? `${server.ram_mb / 1024} GB` : `${server.ram_mb} MB`}</span>}
                 </div>
               </div>
               {server.tags?.length > 0 && (
@@ -127,11 +127,16 @@ export default function ServersPage() {
                   {server.tags.map(tag => <TagPill key={tag.id} tag={tag} />)}
                 </div>
               )}
-              <div className="mt-3 pt-3 flex items-center justify-between text-xs"
+              <div className="mt-auto pt-3 flex items-center justify-between text-xs"
                 style={{ borderTop: '1px solid var(--color-border)' }}>
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1" style={{ color: 'var(--color-primary)' }}>
+                <span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--color-primary)' }}>
                   <ExternalLink size={12} /> {t('server_detail')}
                 </span>
+                {server.billing_cycle && server.monthly_cost > 0 && (
+                  <span className="font-mono group-hover:opacity-0 transition-opacity" style={{ color: 'var(--color-text-muted)' }}>
+                    {server.billing_cycle}
+                  </span>
+                )}
               </div>
             </Link>
           ))}
