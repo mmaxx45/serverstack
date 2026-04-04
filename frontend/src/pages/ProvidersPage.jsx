@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Building2, Pencil, Trash2, X, ExternalLink, TrendingUp } from 'lucide-react';
 import ConfirmModal from '../components/ConfirmModal.jsx';
+import EmptyState from '../components/EmptyState.jsx';
 import { api } from '../api/client.js';
 
 export default function ProvidersPage() {
@@ -88,10 +89,7 @@ export default function ProvidersPage() {
       )}
 
       {providers.length === 0 ? (
-        <div className="text-center py-16">
-          <Building2 size={48} className="mx-auto mb-4 opacity-20" />
-          <p style={{ color: 'var(--color-text-muted)' }}>{t('actions.no_data')}</p>
-        </div>
+        <EmptyState icon={Building2} title={t('actions.empty_providers')} description={t('actions.empty_providers_desc')} />
       ) : (
         <div className="space-y-3">
           {providers.map(p => (

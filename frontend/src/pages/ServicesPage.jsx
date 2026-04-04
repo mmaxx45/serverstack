@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Search, Cog, ExternalLink, Container } from 'lucide-react';
 import { api } from '../api/client.js';
 import StatusBadge from '../components/StatusBadge.jsx';
+import EmptyState from '../components/EmptyState.jsx';
 
 const CAT_COLORS = { web: '#10b981', database: '#3b82f6', monitoring: '#f59e0b', media: '#8b5cf6', other: '#6b7280' };
 const CATEGORIES = ['web', 'database', 'monitoring', 'media', 'other'];
@@ -71,10 +72,7 @@ export default function ServicesPage() {
       {loading ? (
         <div className="text-center py-16 opacity-50">{t('common:actions.loading')}</div>
       ) : Object.keys(grouped).length === 0 ? (
-        <div className="text-center py-16">
-          <Cog size={48} className="mx-auto mb-4 opacity-20" />
-          <p style={{ color: 'var(--color-text-muted)' }}>{t('common:actions.no_data')}</p>
-        </div>
+        <EmptyState icon={Cog} title={t('common:actions.empty_services')} description={t('common:actions.empty_services_desc')} />
       ) : (
         <div className="space-y-6">
           {Object.entries(grouped).map(([serverName, data]) => (

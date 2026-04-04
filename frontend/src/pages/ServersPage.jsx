@@ -7,6 +7,7 @@ import StatusBadge from '../components/StatusBadge.jsx';
 import CostBadge from '../components/CostBadge.jsx';
 import TagPill from '../components/TagPill.jsx';
 import { SkeletonServerGrid } from '../components/Skeleton.jsx';
+import EmptyState from '../components/EmptyState.jsx';
 
 export default function ServersPage() {
   const { t } = useTranslation('servers');
@@ -77,10 +78,7 @@ export default function ServersPage() {
       {loading ? (
         <SkeletonServerGrid />
       ) : filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <Server size={48} className="mx-auto mb-4 opacity-20" />
-          <p style={{ color: 'var(--color-text-muted)' }}>{t('common:actions.no_data')}</p>
-        </div>
+        <EmptyState icon={Server} title={t('common:actions.empty_servers')} description={t('common:actions.empty_servers_desc')} actionLabel={t('add_server')} actionTo="/servers/new" />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           {filtered.map(server => (
