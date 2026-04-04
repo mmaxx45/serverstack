@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Plus, Search, Server, ExternalLink, Copy, Check, Cpu, MemoryStick, HardDrive } from 'lucide-react';
+import { Plus, Search, Server, ExternalLink, Copy, Check, Cpu, HardDrive } from 'lucide-react';
 import { api } from '../api/client.js';
 import StatusBadge from '../components/StatusBadge.jsx';
 import CostBadge from '../components/CostBadge.jsx';
@@ -126,7 +126,7 @@ export default function ServersPage() {
                   )}
                   {server.ram_mb > 0 && (
                     <span className="flex items-center gap-1 font-mono">
-                      <MemoryStick size={12} style={{ color: '#8b5cf6' }} />
+                      <HardDrive size={12} style={{ color: '#8b5cf6' }} />
                       {server.ram_mb >= 1024 && server.ram_mb % 1024 === 0 ? `${server.ram_mb / 1024} GB` : `${server.ram_mb} MB`}
                     </span>
                   )}
