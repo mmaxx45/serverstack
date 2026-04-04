@@ -133,8 +133,8 @@ export default function ServersPage() {
                   <ExternalLink size={12} /> {t('server_detail')}
                 </span>
                 {server.billing_cycle && server.monthly_cost > 0 && (
-                  <span className="font-mono group-hover:opacity-0 transition-opacity" style={{ color: 'var(--color-text-muted)' }}>
-                    {server.billing_cycle}
+                  <span className="group-hover:opacity-0 transition-opacity" style={{ color: 'var(--color-text-muted)' }}>
+                    {t(`contracts:cycle_${server.billing_cycle}`, server.billing_cycle)}
                   </span>
                 )}
               </div>
