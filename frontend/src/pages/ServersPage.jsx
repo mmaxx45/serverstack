@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Plus, Search, Server, ExternalLink, Copy, Check } from 'lucide-react';
+import { Plus, Search, Server, ExternalLink, Copy, Check, Cpu, MemoryStick, HardDrive } from 'lucide-react';
 import { api } from '../api/client.js';
 import StatusBadge from '../components/StatusBadge.jsx';
 import CostBadge from '../components/CostBadge.jsx';
@@ -117,9 +117,25 @@ export default function ServersPage() {
                 {server.provider_name && <p>{t('provider')}: {server.provider_name}</p>}
                 {server.type && <p className="capitalize">{t(`type_${server.type}`, server.type)}</p>}
                 {server.os && <p>{server.os}</p>}
-                <div className="flex gap-4 pt-1">
-                  {server.cpu_cores && <span className="font-mono">{server.cpu_cores} {t('cpu_cores')}</span>}
-                  {server.ram_mb && <span className="font-mono">{server.ram_mb >= 1024 && server.ram_mb % 1024 === 0 ? `${server.ram_mb / 1024} GB` : `${server.ram_mb} MB`}</span>}
+                <div className="flex flex-wrap gap-x-3 gap-y-1 pt-1">
+                  {server.cpu_cores > 0 && (
+                    <span className="flex items-center gap-1 font-mono">
+                      <Cpu size={12} style={{ color: '#06b6d4' }} />
+                      {server.cpu_cores} {server.cpu_cores === 1 ? t('cpu_core_one') : t('cpu_core_other')}
+                    </span>
+                  )}
+                  {server.ram_mb > 0 && (
+                    <span className="flex items-center gap-1 font-mono">
+                      <MemoryStick size={12} style={{ color: '#8b5cf6' }} />
+                      {server.ram_mb >= 1024 && server.ram_mb % 1024 === 0 ? `${server.ram_mb / 1024} GB` : `${server.ram_mb} MB`}
+                    </span>
+                  )}
+                  {server.total_disk_gb > 0 && (
+                    <span className="flex items-center gap-1 font-mono">
+                      <HardDrive size={12} style={{ color: '#f59e0b' }} />
+                      {server.total_disk_gb >= 1024 ? `${(server.total_disk_gb / 1024).toFixed(1)} TB` : `${server.total_disk_gb} GB`}
+                    </span>
+                  )}
                 </div>
               </div>
               {server.tags?.length > 0 && (
