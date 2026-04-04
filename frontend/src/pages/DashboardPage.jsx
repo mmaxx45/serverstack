@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { api } from '../api/client.js';
 import CostBadge from '../components/CostBadge.jsx';
+import { SkeletonDashboard } from '../components/Skeleton.jsx';
 
 const COLORS = ['#10b981', '#06b6d4', '#8b5cf6', '#f59e0b', '#ef4444', '#ec4899'];
 
@@ -37,7 +38,7 @@ export default function DashboardPage() {
       .then(([s, c, a, r, b]) => { setSummary(s); setCosts(c); setAlerts(a); setResources(r); setBilling(b); });
   }, []);
 
-  if (!summary) return <div className="flex items-center justify-center h-64 opacity-50">{t('common:actions.loading')}</div>;
+  if (!summary) return <SkeletonDashboard />;
 
   const markAllRead = async () => {
     await api.markAllAlertsRead();

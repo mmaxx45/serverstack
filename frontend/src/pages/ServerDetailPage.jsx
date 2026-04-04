@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Edit, Trash2, Eye, EyeOff, Network, Cog, KeyRound, HardDrive, Plus, X, FileText, Tag, DollarSign, TrendingUp } from 'lucide-react';
+import ConfirmModal from '../components/ConfirmModal.jsx';
 import CostBadge from '../components/CostBadge.jsx';
 import TagPill from '../components/TagPill.jsx';
 import { api } from '../api/client.js';
@@ -35,8 +36,9 @@ export default function ServerDetailPage() {
 
   useEffect(() => { loadData(); }, [id]);
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   const handleDelete = async () => {
-    if (!confirm(t('confirm_delete'))) return;
     await api.deleteServer(id);
     navigate('/servers');
   };
@@ -81,7 +83,7 @@ export default function ServerDetailPage() {
         <h1 className="text-2xl font-bold flex-1" style={{ fontFamily: 'var(--font-heading)' }}>{server.name}</h1>
         <StatusBadge status={server.status} />
         <Link to={`/servers/${id}/edit`} className="p-2 rounded-lg hover:bg-white/5" style={{ color: 'var(--color-primary)' }}><Edit size={18} /></Link>
-        <button onClick={handleDelete} className="p-2 rounded-lg hover:bg-white/5" style={{ color: 'var(--color-danger)' }}><Trash2 size={18} /></button>
+        <button onClick={() => setShowDeleteConfirm(true)} className="p-2 rounded-lg hover:bg-white/5" style={{ color: 'var(--color-danger)' }}><Trash2 size={18} /></button>
       </div>
 
       {/* Server info */}
@@ -534,6 +536,16 @@ export default function ServerDetailPage() {
           </div>
         )}
       </div>
+
+      {showDeleteConfirm && (
+        <ConfirmModal
+          title={t('confirm_delete')}
+          message={server?.name}
+          danger
+          onConfirm={() => { setShowDeleteConfirm(false); handleDelete(); }}
+          onCancel={() => setShowDeleteConfirm(false)}
+        />
+      )}
     </div>
   );
 }

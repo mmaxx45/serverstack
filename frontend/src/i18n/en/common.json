@@ -46,7 +46,13 @@
     "export": "Export",
     "import": "Import",
     "all": "All",
-    "copied": "Copied"
+    "copied": "Copied",
+    "empty_servers": "No servers yet",
+    "empty_servers_desc": "Add your first server to get started",
+    "empty_providers": "No providers yet",
+    "empty_providers_desc": "Add a hosting provider first",
+    "empty_services": "No services tracked",
+    "empty_services_desc": "Add services to your servers to see them here"
   },
   "status": {
     "active": "Active",

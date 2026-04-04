@@ -81,6 +81,13 @@ export default function ServerFormPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Client-side validation
+    if (!form.name.trim()) { setError(t('missing_fields')); return; }
+    if (!form.provider_id) { setError(t('missing_fields')); return; }
+    if (form.cpu_cores && Number(form.cpu_cores) < 0) { setError(t('common:actions.invalid_value', 'Invalid value')); return; }
+    if (form.ram_mb && Number(form.ram_mb) < 0) { setError(t('common:actions.invalid_value', 'Invalid value')); return; }
+
     setLoading(true);
 
     const body = {
