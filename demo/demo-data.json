@@ -1,0 +1,124 @@
+{
+  "providers": [
+    { "id": 1, "name": "CloudFlow", "website": "https://cloudflow.example.com", "support_email": "support@cloudflow.example.com", "support_phone": "+49 30 1234567", "notes": null },
+    { "id": 2, "name": "ServerPlex", "website": "https://serverplex.example.com", "support_email": "help@serverplex.example.com", "support_phone": null, "notes": null },
+    { "id": 3, "name": "HostNova", "website": "https://hostnova.example.com", "support_email": "info@hostnova.example.com", "support_phone": "+49 89 7654321", "notes": null },
+    { "id": 4, "name": "RackBridge", "website": "https://rackbridge.example.com", "support_email": null, "support_phone": null, "notes": "Budget provider, good for non-critical workloads" }
+  ],
+  "servers": [
+    {
+      "id": 1, "provider_id": 1, "name": "Web Cluster Primary", "type": "root_server", "hostname": "web01.example.com",
+      "location": "de/fra", "cpu_cores": 8, "ram_mb": 32768, "os": "Debian 13", "status": "active",
+      "ssh_user": "deploy", "ssh_port": 22, "notes": "Main production web server",
+      "contract_number": "CF-2025-001", "monthly_cost": 29.99, "regular_cost": null,
+      "billing_cycle": "monthly", "contract_start_date": "2025-03-01", "contract_end_date": "2026-03-01",
+      "cancellation_period_days": 30, "auto_renew": 1, "contract_period": "12 months"
+    },
+    {
+      "id": 2, "provider_id": 1, "name": "Database Server", "type": "dedicated", "hostname": "db01.example.com",
+      "location": "de/fra", "cpu_cores": 16, "ram_mb": 65536, "os": "Ubuntu 24.04", "status": "active",
+      "ssh_user": "admin", "ssh_port": 2222, "notes": "PostgreSQL + Redis",
+      "contract_number": "CF-2025-002", "monthly_cost": 69.00, "regular_cost": null,
+      "billing_cycle": "yearly", "contract_start_date": "2025-01-15", "contract_end_date": "2026-01-15",
+      "cancellation_period_days": 90, "auto_renew": 1, "contract_period": "12 months"
+    },
+    {
+      "id": 3, "provider_id": 2, "name": "API Gateway", "type": "vps", "hostname": "api.example.com",
+      "location": "de/nbg", "cpu_cores": 4, "ram_mb": 8192, "os": "Debian 13", "status": "active",
+      "ssh_user": "root", "ssh_port": 22, "notes": null,
+      "monthly_cost": 12.50, "billing_cycle": "monthly", "contract_start_date": "2025-06-01",
+      "auto_renew": 1, "contract_period": "1 month"
+    },
+    {
+      "id": 4, "provider_id": 2, "name": "Staging Environment", "type": "vps", "hostname": "staging.example.com",
+      "location": "de/nbg", "cpu_cores": 2, "ram_mb": 4096, "os": "Debian 13", "status": "active",
+      "ssh_user": "root", "ssh_port": 22, "notes": "Mirror of production for testing",
+      "monthly_cost": 5.50, "regular_cost": 8.00, "promo_price": 1, "promo_end_date": "2026-06-01",
+      "billing_cycle": "monthly", "contract_start_date": "2025-06-01",
+      "auto_renew": 1, "contract_period": "1 month"
+    },
+    {
+      "id": 5, "provider_id": 3, "name": "Media Server", "type": "root_server", "hostname": "media.example.com",
+      "location": "de/fsn", "cpu_cores": 6, "ram_mb": 16384, "os": "Debian 12", "status": "active",
+      "ssh_user": "admin", "ssh_port": 22, "notes": "Jellyfin + Nextcloud",
+      "monthly_cost": 19.99, "billing_cycle": "monthly", "contract_start_date": "2025-04-15",
+      "contract_end_date": "2026-04-15", "auto_renew": 1, "contract_period": "12 months"
+    },
+    {
+      "id": 6, "provider_id": 3, "name": "Monitoring Stack", "type": "vps", "hostname": "monitor.example.com",
+      "location": "de/fsn", "cpu_cores": 2, "ram_mb": 4096, "os": "Ubuntu 24.04", "status": "active",
+      "ssh_user": "root", "ssh_port": 22,
+      "monthly_cost": 6.99, "billing_cycle": "monthly", "contract_start_date": "2025-07-01",
+      "auto_renew": 1, "contract_period": "1 month"
+    },
+    {
+      "id": 7, "provider_id": 4, "name": "Backup Storage", "type": "vps", "hostname": "backup.example.com",
+      "location": "fi/hel", "cpu_cores": 2, "ram_mb": 2048, "os": "Debian 12", "status": "active",
+      "ssh_user": "backup", "ssh_port": 22, "notes": "Restic backup target",
+      "monthly_cost": 3.99, "billing_cycle": "monthly", "contract_start_date": "2025-05-01",
+      "auto_renew": 1, "contract_period": "1 month"
+    },
+    {
+      "id": 8, "provider_id": 2, "name": "Dev Sandbox", "type": "cloud", "hostname": "dev.example.com",
+      "location": "de/nbg", "cpu_cores": 1, "ram_mb": 1024, "os": "Debian 13", "status": "active",
+      "ssh_user": "dev", "ssh_port": 22, "notes": "Throwaway dev environment",
+      "monthly_cost": 1.50, "billing_cycle": "monthly", "contract_start_date": "2025-09-01",
+      "auto_renew": 0, "is_cancelled": 1, "contract_end_date": "2026-06-01",
+      "contract_period": "1 month"
+    }
+  ],
+  "ip_addresses": [
+    { "id": 1, "server_id": 1, "address": "185.123.45.67", "version": "ipv4", "type": "primary", "rdns": "web01.example.com" },
+    { "id": 2, "server_id": 1, "address": "2a01:4f8:c17:1234::1", "version": "ipv6", "type": "primary", "rdns": "web01.example.com" },
+    { "id": 3, "server_id": 2, "address": "185.123.45.68", "version": "ipv4", "type": "primary", "rdns": "db01.example.com" },
+    { "id": 4, "server_id": 2, "address": "10.0.0.0/24", "version": "ipv4", "type": "additional", "notes": "Internal network" },
+    { "id": 5, "server_id": 3, "address": "94.130.12.34", "version": "ipv4", "type": "primary", "rdns": "api.example.com" },
+    { "id": 6, "server_id": 4, "address": "94.130.12.35", "version": "ipv4", "type": "primary" },
+    { "id": 7, "server_id": 5, "address": "116.202.78.90", "version": "ipv4", "type": "primary", "rdns": "media.example.com" },
+    { "id": 8, "server_id": 5, "address": "2a01:4f8:c2c:5678::1", "version": "ipv6", "type": "primary" },
+    { "id": 9, "server_id": 6, "address": "116.202.78.91", "version": "ipv4", "type": "primary", "rdns": "monitor.example.com" },
+    { "id": 10, "server_id": 7, "address": "95.217.34.56", "version": "ipv4", "type": "primary" },
+    { "id": 11, "server_id": 8, "address": "94.130.12.36", "version": "ipv4", "type": "primary" }
+  ],
+  "services": [
+    { "id": 1, "server_id": 1, "name": "Nginx", "category": "web", "port": 443, "domain": "example.com", "protocol": "https", "docker": 0, "status": "running" },
+    { "id": 2, "server_id": 1, "name": "Node.js App", "category": "web", "port": 3000, "domain": "app.example.com", "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 3, "server_id": 1, "name": "Certbot", "category": "other", "docker": 0, "status": "running", "notes": "Auto-renew SSL certs" },
+    { "id": 4, "server_id": 2, "name": "PostgreSQL", "category": "database", "port": 5432, "protocol": "tcp", "docker": 0, "status": "running" },
+    { "id": 5, "server_id": 2, "name": "Redis", "category": "database", "port": 6379, "protocol": "tcp", "docker": 1, "status": "running" },
+    { "id": 6, "server_id": 2, "name": "pgAdmin", "category": "database", "port": 5050, "domain": "pgadmin.example.com", "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 7, "server_id": 3, "name": "API Server", "category": "web", "port": 8080, "domain": "api.example.com", "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 8, "server_id": 3, "name": "Nginx Proxy", "category": "web", "port": 443, "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 9, "server_id": 4, "name": "Staging App", "category": "web", "port": 3000, "domain": "staging.example.com", "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 10, "server_id": 5, "name": "Jellyfin", "category": "media", "port": 8096, "domain": "media.example.com", "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 11, "server_id": 5, "name": "Nextcloud", "category": "web", "port": 443, "domain": "cloud.example.com", "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 12, "server_id": 5, "name": "MariaDB", "category": "database", "port": 3306, "protocol": "tcp", "docker": 1, "status": "running" },
+    { "id": 13, "server_id": 6, "name": "Grafana", "category": "monitoring", "port": 3000, "domain": "grafana.example.com", "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 14, "server_id": 6, "name": "Prometheus", "category": "monitoring", "port": 9090, "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 15, "server_id": 6, "name": "Uptime Kuma", "category": "monitoring", "port": 3001, "domain": "status.example.com", "protocol": "https", "docker": 1, "status": "running" },
+    { "id": 16, "server_id": 6, "name": "Loki", "category": "monitoring", "port": 3100, "protocol": "tcp", "docker": 1, "status": "running" },
+    { "id": 17, "server_id": 7, "name": "Restic Server", "category": "other", "port": 8000, "protocol": "https", "docker": 0, "status": "running" }
+  ],
+  "server_credentials": [
+    { "id": 1, "server_id": 1, "label": "root", "username": "root", "notes": "Initial root password" },
+    { "id": 2, "server_id": 1, "label": "deploy", "username": "deploy", "notes": "CI/CD deployment user" },
+    { "id": 3, "server_id": 2, "label": "postgres", "username": "postgres", "notes": "DB superuser" },
+    { "id": 4, "server_id": 5, "label": "admin", "username": "admin", "notes": "Panel admin" }
+  ],
+  "server_disks": [
+    { "id": 1, "server_id": 1, "label": "Boot", "size_gb": 256, "type": "nvme" },
+    { "id": 2, "server_id": 1, "label": "Data", "size_gb": 512, "type": "nvme" },
+    { "id": 3, "server_id": 2, "label": "Boot", "size_gb": 512, "type": "nvme" },
+    { "id": 4, "server_id": 2, "label": "Data", "size_gb": 2048, "type": "nvme" },
+    { "id": 5, "server_id": 3, "label": "System", "size_gb": 80, "type": "ssd" },
+    { "id": 6, "server_id": 4, "label": "System", "size_gb": 80, "type": "ssd" },
+    { "id": 7, "server_id": 5, "label": "Boot", "size_gb": 256, "type": "ssd" },
+    { "id": 8, "server_id": 5, "label": "Media", "size_gb": 4096, "type": "hdd" },
+    { "id": 9, "server_id": 6, "label": "System", "size_gb": 40, "type": "ssd" },
+    { "id": 10, "server_id": 7, "label": "Boot", "size_gb": 20, "type": "ssd" },
+    { "id": 11, "server_id": 7, "label": "Backup", "size_gb": 1024, "type": "hdd", "monthly_cost": 2.99 },
+    { "id": 12, "server_id": 8, "label": "System", "size_gb": 20, "type": "ssd" }
+  ],
+  "exported_at": "2026-04-04T12:00:00.000Z",
+  "version": "0.4.0-alpha"
+}
